@@ -7,8 +7,8 @@ ActiveAdmin.register Detail do
 belongs_to :item
 end
 compro = ItemsController.new
-#active_admin_import csv_options: {col_sep: ";" },
- #             after_import: proc{compro.nuevos}
+active_admin_import csv_options: {col_sep: ";" },
+              after_import: proc{compro.nuevos}
 
 
 

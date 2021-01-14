@@ -41,9 +41,10 @@ gem 'wicked_pdf', '~> 1.1'
 #gem 'wicked_pdf', github: 'mileszs/wicked_pdf'
 gem 'wkhtmltopdf-binary'
 
+gem 'caxlsx'
+gem 'caxlsx_rails'
 
-
-
+gem "active_admin_import" , github: "activeadmin-plugins/active_admin_import"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
