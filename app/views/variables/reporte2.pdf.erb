@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+<meta charset="utf-8">
+</head>
+<body>
+<h1>Reporte2 de pdf</h1>
+
+
+<h2>PARAMETROS
+  <%if Parameter.find_by_id(1).origen==1 %>
+    Compras
+   <%end %>
+   <%if Parameter.find_by_id(1).origen==2 %>
+     Ventas
+  <%end %>
+  <%if Parameter.find_by_id(1).origen==3 %>
+      Parte
+  <%end %>
+  <%if Parameter.find_by_id(1).origen==4 %>
+       Inventario
+  <%end %>
+  <%if Parameter.find_by_id(1).origen==5 %>
+       Pedido
+   <%end %>
+
+</h2>
+     <h3>
+       EMPRESA =
+       <%if Parameter.find_by_id(1).empresa==1 %>
+         Mario
+        <%end %>
+        <%if Parameter.find_by_id(1).empresa==2 %>
+          Confecciones
+         <%end %>
+         <%if Parameter.find_by_id(1).empresa==3 %>
+           Industrias
+        <%end %>
+
+
+       PERIODO =    <%= Parameter.find_by_id(1).mes.strftime("%b")  %>-<%=Parameter.find_by_id(1).mes.strftime("%Y") %>
+       REGISTROS =  <%=@regis %>
+      <% if @acum>0 %>
+      SUBTOTAL =  <%=@acum %>
+      <% end %>
+                  </h3>
+
+<table>
+  <thead>
+    <tr>
+
+
+
+      <th style="width:150px;">Pfecha</th>
+    <% if Parameter.find_by_id(1).origen<3 %>
+      <th style="width:50px;">Serie</th>
+      <th style="width:100px;">Factura</th>
+      <th style="width:100px;">Ruc</th>
+      <th style="width:600px;">Razon</th>
+      <th style="width:100px;">Subtotal</th>
+      <th style="width:100px;">Moneda</th>
+      <th style="width:100px;">Tc</th>
+    <% end %>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= item.pfecha %></td>
+        <% if Parameter.find_by_id(1).origen<3 %>
+        <td><%= item.serie %></td>
+        <td><%= item.nfactu %></td>
+        <td><%= item.client.ruc if item.client %></td>
+        <td><%= item.client.razon if item.client %></td>
+        <td><%= item.subtotal %></td>
+        <td><%= item.moneda %></td>
+        <td><%= item.tc %></td>
+          <% end %>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</body>

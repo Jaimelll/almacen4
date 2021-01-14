@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+<meta charset="utf-8">
+</head>
+<body>
+
+  <table> 
+
+    <tbody>
+      <%  dar = ParametersController.new   %> 
+     
+      <%  dar.darcod1 %> 
+    
+      <% @items.each do |item| %>
+        <h6 class="rep">
+        <%if Parameter.find_by_id(1).origen==1 %>
+           <%= Parameter.find_by_id(1).mes.strftime("%Y").to_s+Parameter.find_by_id(1).mes.strftime("%m").to_s+"00"+"|"  +
+               item.sele.to_s.rjust(5,"0")+"|" +
+               "M"+item.sele.to_s.rjust(5,"0")+"|"+item.pfecha.strftime("%d/%m/%Y")+"|" %>
+
+           <%= "|"+(if item.serie.first=="T" then "12" else (if item.serie.first=="F" then "01" else "01" end) end)+
+              "|"+(if item.serie.first=="T" then item.serie else (if item.serie.first=="F" then item.serie else item.serie.rjust(4,"0") end) end)+"|" %>
+
+           <%="|" +item.nfactu.rjust(8,"0")+"|" %>
+           <%="|"+"6"+"|"+(item.client.ruc+"|" if item.client) +
+             (item.client.razon+"|" if item.client)+
+             ('%.2f' % (item.subtotal).to_s+"|" if item.subtotal)+('%.2f' % (item.subtotal*0.18).to_s+"|" if item.subtotal)%>
+           <%= "|"  %>
+           <%= "|"  %>
+           <%= "|"  %>
+           <%= "|"  %>
+           <%= "|"  %>
+           <%= "|"  %>
+            <%if item.tc==0 %>
+           <%= "|" +('%.2f' % (item.subtotal*1.18).to_s+"|" if item.subtotal) %>
+           <%= "|"  %>
+           <%= "|" +item.pfecha.strftime("%d/%m/%Y")+"|"  %>
+           <%else %>
+
+           <%= "|" +('%.2f' % (item.subtotal*1.18).to_s+"|" if item.subtotal)+"USD"+"|"+ ('%.3f' % item.tc).to_s +
+           "|"+item.pfecha.strftime("%d/%m/%Y")+"|"  %>
+           <%end %>
+           <%= "|"  %>
+           <%= "|"  %>
+           <%= "|"  %>
+           <%= "|"  %>
+           <%= "|"  %>
+           <%= "|"  %>
+           <%= "|" +(item.client.origen.to_s+"|" if item.client) %>
+           <%= "|"  %>
+           <%= "|"  %>
+           <%= "|"  %>
+           <%= "|"  %>
+           <%= "|" +"1" +"|"+(if item.pfecha>=item.mmes then "1|" else "6|" end ) %>
+      <% end %>
+       <%if Parameter.find_by_id(1).origen==2 %>
+         <%if item.client.id==1 %>
+           <%= Parameter.find_by_id(1).mes.strftime("%Y").to_s+Parameter.find_by_id(1).mes.strftime("%m").to_s+"00"+"|"  +
+               item.sele.to_s.rjust(5,"0")+"|" +
+               "M"+item.sele.to_s.rjust(5,"0")+"|"%>
+           <%="|" %>
+         <%else %>
+           <%= Parameter.find_by_id(1).mes.strftime("%Y").to_s+Parameter.find_by_id(1).mes.strftime("%m").to_s+"00"+"|"  +
+               item.sele.to_s.rjust(5,"0")+"|" +
+               "M"+item.sele.to_s.rjust(5,"0")+"|"+
+               item.pfecha.strftime("%d/%m/%Y")+"|" %>
+         <% end %>
+        <%= "|"+(if item.serie.first=="T" then "12" else (if item.serie.first=="B" then "03" else "01" end) end)+
+            "|"+(if item.serie.first=="T" then item.serie else (if item.serie.first=="B" then (item.serie.delete "B").rjust(4,"0") else item.serie.rjust(4,"0") end) end)+
+            "|" +item.nfactu.rjust(8,"0")+"|"%>
+        <%if item.client.id==1 %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|" %>
+          <%="|"+"2"+"|" %>
+        <%else %>
+          <%= "|"+(if item.serie.first=="B" then "1" else "6" end)+"|"%>
+                    <%if item.client.id==623 then %>
+                      <%="|" %>
+                      <%="|" %>
+                    <%else %>
+                      <%=  (item.client.ruc+"|" if item.client)+
+                       (item.client.razon+"|" if item.client)%>
+                    <%end %>
+
+
+          <%= "|"+('%.2f' % (item.subtotal).to_s+"|" if item.subtotal)%>
+            <%= "|"+('%.2f' % (item.subtotal*0.18).to_s+"|" if item.subtotal)%>
+            <%="|" %>
+            <%="|" %>
+            <%="|" %>
+            <%="|" %>
+            <%="|" %>
+            <%="|" %>
+          <%if item.tc==0 %>
+            <%= "|"+('%.2f' % (item.subtotal*1.18).to_s+"|" if item.subtotal)%>
+            <%="|" %>
+            <%="|"+ item.pfecha.strftime("%d/%m/%Y")+"|"%>
+          <% else %>
+            <%= "|"+('%.2f' % (item.subtotal*1.18).to_s+"|" if item.subtotal)+"USD"+"|"+ ('%.3f' % item.tc).to_s +
+             "|"+item.pfecha.strftime("%d/%m/%Y")+"|"%>
+          <% end %>
+
+            <%="|" %>
+            <%="|" %>
+            <%="|" %>
+            <%="|" %>
+            <%="|"+"1"+"|"+"1"+"|" %>
+        <% end %>
+
+      <% end %>
+
+    </h6>
+     <% end %>
+
+    </tbody>
+  </table>
+
+</body>

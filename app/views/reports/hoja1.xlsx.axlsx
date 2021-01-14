@@ -1,0 +1,290 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+
+titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                 alignment: { horizontal: :center,vertical: :center, wrap_text: :true },
+                                b: true, sz: 8, bg_color: "C1C1C1")
+
+solestitu = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center, wrap_text: :true},num_fmt: 2,
+                                b: true,sz: 8, bg_color: "C1C1C1")
+
+soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 2, sz: 8)
+
+soles1 = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 3,
+                           sz: 8,    bg_color: "C1C1C1")
+
+soles2 = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 3,
+                           sz: 8,      bg_color: "ffff99")                           
+
+soles3 = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 3,
+                           sz: 8,     bg_color: "4dff4d")
+
+soles4 = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 3,
+                           sz: 8,     bg_color: "ff3333")
+
+
+fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                        alignment: { horizontal: :center,vertical: :center}, sz: 8)
+fechad = style.add_style(format_code: "dd/mm/yy", border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :center,vertical: :center }, sz: 8)                        
+
+fecham = style.add_style(format_code: "mmmm", border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :center,vertical: :center }, sz: 8)     
+
+
+centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center,vertical: :center }, sz: 8)
+
+
+
+izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :left ,vertical: :center, wrap_text: :true}, sz: 8)
+
+
+
+desc = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                              alignment: { horizontal: :left ,vertical: :center, wrap_text: :true}, sz: 8)
+
+                                                       
+
+
+ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
+                            alignment: { horizontal: :center,vertical: :center }, sz: 8)
+
+
+normal = style.add_style( alignment: { horizontal: :center,vertical: :center }, sz: 10)
+
+
+
+def merge_last_row(sheet,options ={})
+  last_row = sheet.rows.last.row_index  + 1
+  first_col,last_col = options[:columns]
+  if first_col && last_col
+    sheet.merge_cells "#{first_col}#{last_row}:#{last_col}#{last_row}"
+  else
+    sheet.merge_cells sheet.rows.last
+  end
+  sheet.rows.last.style = style if options[:style]
+end
+
+############################
+
+report = ItemsController.new
+
+############################
+
+case @vopc.to_i
+when 1
+
+wb.add_worksheet(name: "VENTAS") do |sheet|
+
+  sheet.add_row []
+
+     
+    sheet.add_row [nil,nil,"REGISTRO DE VENTAS ",nil], 
+      style: [nil,nil,normal,normal], height: 40
+    merge_last_row sheet, columns:["C","D"]
+
+    sheet.add_row []
+
+vraz=Formula.where(product_id:10).where(orden:Parameter.find_by_id(1).empresa).
+                   select('descripcion as dd').first.dd.capitalize
+
+   sheet.add_row ["RAZON SOCIAL:", vraz,nil],
+        style: [normal, normal], height: 40
+         merge_last_row sheet, columns:["B","C"]
+   sheet.add_row ["PERIODO:", Parameter.find_by_id(1).mes.strftime("%b/%Y"),nil],
+        style: [normal, normal], height: 40
+         merge_last_row sheet, columns:["B","C"]      
+   sheet.add_row []      
+
+  sheet.add_row ["CODIGO", "FECHA", "SERIE", "FACTURA", "CLIENTE", "RUC","DETALLE","MONTO","IGV" ],
+        style: [titu, titu, titu, titu, titu, titu, titu,titu,titu], height: 40
+
+
+vparte= Item.where(origen:2, mmes:Parameter.find_by_id(1).mes,empresa:Parameter.find_by_id(1).empresa).
+        order('sele') 
+conta=7
+ vparte.each do |item|
+ vrazon,vruc=report.centr_nomb(item.client_id)
+         
+
+    vdetalle=Detail.where(item_id:item.id)
+    if vdetalle.count>0 then
+      vdetalle.each do |detalle|
+           
+      sheet.add_row [item.sele, item.pfecha,item.serie, item.nfactu,vrazon, vruc,detalle.descripcion,
+                   detalle.cantidad*detalle.precio, detalle.cantidad*detalle.precio*0.18  ],
+              style: [centra, fechad, centra, centra, desc, centra, desc,soles,soles], height: 35
+      conta=conta+1    
+      end
+    end
+
+ end   
+ tot="ACUMULADO ="
+ tot1="TOTAL ="
+sheet.add_row [nil,nil,nil,nil,nil,nil,tot,"=SUM(H4:H#{conta})","=SUM(I8:I#{conta})" ],
+    style: [nil, nil, nil, nil, nil, nil,titu,solestitu,solestitu], height: 25
+
+sheet.add_row [nil,nil,nil,nil,nil,nil,tot1,"=SUM(H4:H#{conta})+SUM(I8:I#{conta})" ],
+    style: [nil, nil, nil, nil, nil, nil,titu,solestitu], height: 25
+   
+ sheet.column_widths 15, 15,8,15,40,15,30,15
+
+ end
+
+############################
+
+
+wb.add_worksheet(name: "COMPRAS") do |sheet|
+
+  sheet.add_row []
+
+     
+    sheet.add_row [nil,nil,"REGISTRO DE COMPRAS ",nil], 
+      style: [nil,nil,normal,normal], height: 40
+    merge_last_row sheet, columns:["C","D"]
+    sheet.add_row []
+
+vraz=Formula.where(product_id:10).where(orden:Parameter.find_by_id(1).empresa).
+                   select('descripcion as dd').first.dd.capitalize
+
+   sheet.add_row ["RAZON SOCIAL:", vraz,nil],
+        style: [normal, normal], height: 40
+         merge_last_row sheet, columns:["B","C"]
+   sheet.add_row ["PERIODO:", Parameter.find_by_id(1).mes.strftime("%b/%Y"),nil],
+        style: [normal, normal], height: 40
+         merge_last_row sheet, columns:["B","C"]      
+   sheet.add_row []      
+
+  sheet.add_row ["CODIGO", "FECHA", "SERIE", "FACTURA", "PROVEEDOR", "RUC","DETALLE","MONTO","IGV" ],
+        style: [titu, titu, titu, titu, titu, titu, titu,titu,titu], height: 40
+
+
+vparte= Item.where(origen:1, mmes:Parameter.find_by_id(1).mes,empresa:Parameter.find_by_id(1).empresa).
+        order('sele') 
+conta=7
+ vparte.each do |item|
+ vrazon,vruc=report.centr_nomb(item.client_id)
+         
+
+    vdetalle=Detail.where(item_id:item.id)
+    if vdetalle.count>0 then
+      vdetalle.each do |detalle|
+           
+      sheet.add_row [item.sele, item.pfecha,item.serie, item.nfactu,vrazon, vruc,detalle.descripcion,
+                   detalle.cantidad*detalle.precio, detalle.cantidad*detalle.precio*0.18  ],
+              style: [centra, fechad, centra, centra, desc, centra, desc,soles,soles], height: 35
+      conta=conta+1    
+      end
+    end
+
+ end   
+ tot="ACUMULADO ="
+ tot1="TOTAL ="
+sheet.add_row [nil,nil,nil,nil,nil,nil,tot,"=SUM(H4:H#{conta})","=SUM(I8:I#{conta})" ],
+    style: [nil, nil, nil, nil, nil, nil,titu,solestitu,solestitu], height: 25
+
+ 
+sheet.add_row [nil,nil,nil,nil,nil,nil,tot1,"=SUM(H4:H#{conta})+SUM(I8:I#{conta})" ],
+    style: [nil, nil, nil, nil, nil, nil,titu,solestitu], height: 25
+
+ sheet.column_widths 15, 15,8,15,40,15,30,15
+
+ end
+
+when 2
+
+wb.add_worksheet(name: "doc x  empresa") do |sheet|
+
+  sheet.add_row []
+
+   sheet.add_row ["CODIGO", "EMPRESA", "COMPRAS", "VENTAS", "INICIO", "FIN", "TOTAL" ],
+        style: [titu,titu, titu, titu, titu, titu, titu], height: 40
+
+        Formula.where(product_id:10).order('orden').each do |emp|
+
+          
+       sheet.add_row [emp.orden,emp.descripcion ,
+                      Item.where(empresa:emp.orden,origen:1).count,
+                      Item.where(empresa:emp.orden,origen:2).count,
+                      Item.where(empresa:emp.orden).minimum('pfecha'),
+                      Item.where(empresa:emp.orden).maximum('pfecha'),
+                      Item.where(empresa:emp.orden).count ],
+            style: [centra,centra, centra, centra, fechad, fechad, centra], height: 25
+
+
+
+        end
+
+  sheet.column_widths 5,50, 15,15,15,15,15
+  end  ##sheet  
+
+    when 3
+
+
+        wb.add_worksheet(name:"Elimina registros de parte") do |sheet|
+          sheet.add_row ["empieza"]
+
+            Item.where(empresa:2).destroy_all
+        sheet.add_row ["termino"]
+        end
+    when 4
+      wb.add_worksheet(name:"borranuevo1") do |sheet|
+       sheet.add_row ["empieza"]
+
+       Item.where(nuevo:1).update_all( nuevo:0 )
+       sheet.add_row ["termino"]
+      end
+    when 5
+
+      compro = ItemsController.new
+     
+
+      wb.add_worksheet(name:"Actualiza comprobante") do |sheet|
+       sheet.add_row ["empieza"]
+
+       Item.where(nuevo:1).update_all( origen:Parameter.find_by_id(1).origen, 
+                                       mmes:Parameter.find_by_id(1).mes,
+                                       empresa:Parameter.find_by_id(1).empresa)
+
+
+      
+      Item.where(nuevo:1).each do |ittem| 
+
+       object = Detail.new(:descripcion => ittem.detalle,
+                           :cantidad=> 1,
+                           :item_id => ittem.id,
+                           :precio => ittem.subtotal/1.18,
+                           :monto =>ittem.subtotal,
+                           :user_id => 3)
+
+      
+       
+       object.save
+       
+       compro.jalar( ittem.ruc,ittem.id)
+       
+      end
+
+       
+       Item.where(nuevo:1).update_all( nuevo:0)                                
+       sheet.add_row ["termino"]
+      end
+
+   
+
+
+
+
+
+
+ end  ##case
+end  ##cierre de hoja  estilos

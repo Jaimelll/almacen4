@@ -35,6 +35,16 @@ gem 'cancancan'
 gem 'draper'
 gem 'pundit'
 
+
+
+gem 'wicked_pdf', '~> 1.1'
+#gem 'wicked_pdf', github: 'mileszs/wicked_pdf'
+gem 'wkhtmltopdf-binary'
+
+
+
+
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

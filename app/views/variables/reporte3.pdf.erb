@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+<meta charset="utf-8">
+</head>
+<body>
+
+  <table> 
+
+    <tbody>
+      <%  produ = ProductsController.new   %> 
+     
+    
+    
+      <% @items.each do |item| %>
+        <h6 class="rep">
+          
+           <%if Parameter.find_by_id(1).origen==1 %>
+             <% vlinea="" %>
+             <%Formula.where(product_id:17).order('orden').each do |colu| %>
+
+                <%vlinea=vlinea+produ.funcx(item.id,colu.cantidad) %>       
+           
+             <%end%>
+             <%= vlinea%>
+            <%else%>
+             <% vlinea="" %>
+             <%Formula.where(product_id:18).order('orden').each do |colu| %>
+
+                <%vlinea=vlinea+produ.funcx(item.id,colu.cantidad) %>       
+           
+             <%end%>
+             <%= vlinea%>
+
+
+
+
+            <%end%>
+             
+       </h6>
+     <% end %>
+
+    </tbody>
+  </table>
+
+</body>
