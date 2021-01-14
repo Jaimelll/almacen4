@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Material:</strong>
+  <%= @formula.material %>
+</p>
+
+<p>
+  <strong>Integer:</strong>
+  <%= @formula.integer %>
+</p>
+
+<%= link_to 'Edit', edit_formula_path(@formula) %> |
+<%= link_to 'Back', formulas_path %>

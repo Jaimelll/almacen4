@@ -1,0 +1,16 @@
+development: &development
+     adapter: postgresql
+     database: almacend2
+     username: rails2
+     password: rails2
+     host:     localhost
+     schema_search_path: public
+     min_messages: warning
+
+test:
+     <<: *development
+     database: almacent2
+
+production:
+     <<: *development
+     database: almacenp2
