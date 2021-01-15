@@ -37,7 +37,9 @@ permit_params :pfecha, :serie,:nfactu, :client_id,:subtotal,
               :origen, :mmes, :moneda, :tc, :user_id,
               :created_at, :updated_at, :empresa, :sele, :documento, :serie2, :ndocu2,
               :ruc, :razon, :razon2, :detalle,
-              :isc, :bolsas, :oconceptos,
+              :isc, :bolsas, :oconceptos, :monto,
+ ##             :image,
+              images: [],             
               details_attributes: [:id, :descripcion, :cantidad, :precio, :monto, :item_id,
                 :user_id, :product_id, :_destroy]    
   
@@ -142,7 +144,13 @@ form :title => 'Edicion Comprobante'  do |f|
        f.input :isc,:as =>:string, :input_html => { :style =>  'width:30%'}
        f.input :bolsas,:as =>:string, :input_html => { :style =>  'width:30%'}
        f.input :oconceptos,:as =>:string, :input_html => { :style =>  'width:30%'}
-       
+    ##   f.input :image, :as => :file, :hint => f.object.image.present? \
+    ##          ? f.object.image.filename
+    ##           : content_tag(:span, "no hay imagen aun")
+      
+      f.inputs do
+        f.input :images, as: :file, input_html: { multiple: true }
+      end
 
     end
     f.inputs do
@@ -210,7 +218,24 @@ show :title => ' Comprobante'  do
             row :isc
             row :bolsas
             row :oconceptos
+  ##          row "Imagen" do  |item| 
+  ##           unless item.image.blank?
+  ##            link_to item.image.filename, rails_blob_path(item.image, disposition: 'attachment')
+             
+   ##          end
+   ##         end
 
+            row "Imagenes" do |item|
+              div do
+                item.images.each do |img|
+                  div do
+                    image_tag url_for(img), size: "200x200"
+                    link_to img.filename, rails_blob_path(img, disposition: 'attachment')
+                   
+                  end
+                end
+              end
+            end
         
           end
           panel "Tabla de Detalles" do

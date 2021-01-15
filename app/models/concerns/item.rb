@@ -9,7 +9,8 @@ class Item < ApplicationRecord
 
  validates_uniqueness_of :nfactu, :scope => [:serie, :client_id, :documento]
 
-
+## has_one_attached :image
+ has_many_attached :images
 
 
 end
