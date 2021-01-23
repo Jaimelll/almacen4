@@ -39,12 +39,12 @@ gem 'pundit'
 
 gem 'wicked_pdf', '~> 1.1'
 #gem 'wicked_pdf', github: 'mileszs/wicked_pdf'
-gem 'wkhtmltopdf-binary'
 
 gem 'caxlsx'
 gem 'caxlsx_rails'
 
 gem "active_admin_import" , github: "activeadmin-plugins/active_admin_import"
+gem 'cloudinary'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -60,6 +60,8 @@ group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'wkhtmltopdf-binary'
+
 end
 
 group :test do
@@ -69,6 +71,13 @@ group :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
 end
+
+group :production do
+ # gem 'rails_12factor', '~> 0.0.3'
+  gem "wkhtmltopdf-heroku"
+
+end
+
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
