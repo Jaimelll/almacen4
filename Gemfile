@@ -46,6 +46,8 @@ gem 'caxlsx_rails'
 gem "active_admin_import" , github: "activeadmin-plugins/active_admin_import"
 gem 'cloudinary'
 gem "figaro"
+# implementacion milagrosa para Could not detect rake tasks de heroku
+gem 'rack-timeout', '0.3.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
