@@ -22,10 +22,28 @@ class ProductsController < ApplicationController
     end  
 #5 
     def tipc(vid)
-      vtipc=if Item.find_by_id(vid).serie.first=="T" then "12" else (if Item.find_by_id(vid).serie.first=="F" then "01" else "01" end) end
-        if Item.find_by_id(vid).documento==4
-          vtipc="07"
-        end 
+
+      case Item.find_by_id(vid).documento
+      when 1 # factura
+        vtipc="01"
+      when 2 # boleta
+        vtipc="03"
+      when 3 # nota de debito
+        vtipc="08"
+      when 4 # nota de credito
+        vtipc="07"
+      when 5 # ticket
+        vtipc="12"
+      else
+        vtipc="sd"
+      
+      end
+
+
+       #vtipc=if Item.find_by_id(vid).serie.first=="T" then "12" else (if Item.find_by_id(vid).serie.first=="F" then "01" else "01" end) end
+       # if Item.find_by_id(vid).documento==4
+       #   vtipc="07"
+       # end 
 
       return vtipc
     end      
@@ -213,11 +231,11 @@ class ProductsController < ApplicationController
 
    #24  
       def vbolsas(vid)
-        vbolsas=""
+        vbolsas='%.2f'% 0.00.to_s
 
         if Item.find_by_id(vid).bolsas 
           if Item.find_by_id(vid).bolsas>0
-          vbolsas='%.3f' % Item.find_by_id(vid).bolsas.to_s 
+          vbolsas='%.2f' % Item.find_by_id(vid).bolsas.to_s 
           end
         end
         return vbolsas   

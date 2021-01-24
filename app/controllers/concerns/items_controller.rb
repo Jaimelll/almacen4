@@ -78,11 +78,12 @@ class ItemsController < ApplicationController
 
       #  END 2
       end
+      if Client.where(ruc:vruc).count>0 then
       vidclient=Client.where(ruc:vruc).select('id as dd').first.dd   
       Item.where(id:vpara).update_all(client_id:vidclient)
     
       Item.where(id:vpara).update_all( razon2:Item.find_by_id(vpara).razon.upcase)
-    
+      end
     
     
     
