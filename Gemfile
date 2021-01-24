@@ -45,6 +45,7 @@ gem 'caxlsx_rails'
 
 gem "active_admin_import" , github: "activeadmin-plugins/active_admin_import"
 gem 'cloudinary'
+gem "figaro"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
