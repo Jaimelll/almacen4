@@ -337,7 +337,7 @@ PLATFORMS
 DEPENDENCIES
   active_admin_import!
   activeadmin!
-  bootsnap (>= 1.4.6)
+  bootsnap (>= 1.4.4)
   byebug
   cancancan
   capybara (>= 3.26)
@@ -367,6 +367,9 @@ DEPENDENCIES
   wicked_pdf (~> 1.1)
   wkhtmltopdf-binary
   wkhtmltopdf-heroku
+
+RUBY VERSION
+   ruby 2.7.0p0
 
 BUNDLED WITH
    2.2.4
