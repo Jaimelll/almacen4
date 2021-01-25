@@ -337,7 +337,7 @@ PLATFORMS
 DEPENDENCIES
   active_admin_import!
   activeadmin!
-  bootsnap (>= 1.4.4)
+  bootsnap (>= 1.4.6)
   byebug
   cancancan
   capybara (>= 3.26)
