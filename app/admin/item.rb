@@ -208,16 +208,7 @@ show :title => ' Comprobante'  do
             row :subtotal 
             row :monto
            
-            row :moneda do |item|
-              Formula.where(product_id:8,orden:item.moneda).
-                   select('descripcion as dd').first.dd
-             end
-            row :tc
-            row :serie2
-            row :ndocu2
-            row :isc
-            row :bolsas
-            row :oconceptos
+            
   ##          row "Imagen" do  |item| 
   ##           unless item.image.blank?
   ##            link_to item.image.filename, rails_blob_path(item.image, disposition: 'attachment')
