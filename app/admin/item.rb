@@ -208,7 +208,16 @@ show :title => ' Comprobante'  do
             row :subtotal 
             row :monto
            
-            
+            row :moneda do |item|
+              Formula.where(product_id:8,orden:item.moneda).
+                   select('descripcion as dd').first.dd
+             end
+            row :tc
+            row :serie2
+            row :ndocu2
+            row :isc
+            row :bolsas
+            row :oconceptos
   ##          row "Imagen" do  |item| 
   ##           unless item.image.blank?
   ##            link_to item.image.filename, rails_blob_path(item.image, disposition: 'attachment')
@@ -216,7 +225,18 @@ show :title => ' Comprobante'  do
    ##          end
    ##         end
 
-           
+            row "Imagenes" do |item|
+              div do
+                item.images.each do |img|
+                  div do
+                    
+                    link_to img.filename, rails_blob_path(img, disposition: 'attachment')
+                   
+                  end
+                end
+              end
+            end
+        
           end
           panel "Tabla de Detalles" do
             table_for item.details do
@@ -237,63 +257,7 @@ show :title => ' Comprobante'  do
       end
 
 
-      sidebar "Datos Registro" do
-        case Parameter.find_by_id(1).origen
-        when 1
-          li strong { "Registro de Compras : "+
-           Formula.where(product_id:10).where(orden:Parameter.find_by_id(1).empresa).
-                       select('descripcion as dd').first.dd.capitalize}
-                      
-          
-        when 2
-          li strong { "Registro de Ventas : "+
-           Formula.where(product_id:10).where(orden:Parameter.find_by_id(1).empresa).
-                         select('descripcion as dd').first.dd.capitalize}
-         
-         end
-        li  strong { "Periodo :"+Parameter.find_by_id(1).mes.strftime("%b/%Y")}
-        suss=Item.where(origen:Parameter.find_by_id(1).origen,
-              mmes:Parameter.find_by_id(1).mes,
-              empresa:Parameter.find_by_id(1).empresa).sum(:subtotal)
-        smont=Item.where(origen:Parameter.find_by_id(1).origen,
-              mmes:Parameter.find_by_id(1).mes,
-              empresa:Parameter.find_by_id(1).empresa).sum(:monto)
-
-              
-        li  strong { "SUBTOTAL :"+ '%.2f' %(suss)} 
-        li  strong { "IGV :"+ '%.2f' %(suss*0.18)} 
-        li  strong { "TOTAL :"+ '%.2f' %(smont)} 
-
-        li   link_to "Registros Excel",reports_vhoja1_path(format:  "xlsx", :param1=> 1)
-        li
-      ##  li   link_to "actualiza nuevo",reports_vhoja1_path(format:  "xlsx", :param1=> 4)
-        ##  li
-      ##    li   link_to "genera comprobante",reports_vhoja1_path(format:  "xlsx", :param1=> 5)
-        
-       end# de sider
-       
-       sidebar "Datos de Parte" , only: :show do
-        monto=0
-        subtotal=0
- 
-        Item.where(id:params[:id]).each do |item|
-          
-          monto=monto+item.monto
-          subtotal=subtotal+item.subtotal
-
-        end #each
-            ul do
-
-              li   strong {'Subtotal='+'%.2f' %(subtotal).to_s}
-              li   strong {'IGV='+'%.2f' %(subtotal*0.18).to_s}
-              li  strong {'TOTAL='+'%.2f' %(monto).to_s}
-
-
-            end
-
-         
-              # de sider     ,param1=> vpara,:param2=> 1) 
-       end# de sider
+     
 
 
 
