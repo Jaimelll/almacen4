@@ -256,40 +256,6 @@ show :title => ' Comprobante'  do
 
       end
 
-      sidebar "Datos Registro" do
-        case Parameter.find_by_id(1).origen
-        when 1
-          li strong { "Registro de Compras : "+
-           Formula.where(product_id:10).where(orden:Parameter.find_by_id(1).empresa).
-                       select('descripcion as dd').first.dd.capitalize}
-                              <<
-          
-        when 2
-          li strong { "Registro de Ventas : "+
-           Formula.where(product_id:10).where(orden:Parameter.find_by_id(1).empresa).
-                         select('descripcion as dd').first.dd.capitalize}
-         
-         end
-        li  strong { "Periodo :"+Parameter.find_by_id(1).mes.strftime("%b/%Y")}
-        suss=Item.where(origen:Parameter.find_by_id(1).origen,
-              mmes:Parameter.find_by_id(1).mes,
-              empresa:Parameter.find_by_id(1).empresa).sum(:subtotal)
-        smont=Item.where(origen:Parameter.find_by_id(1).origen,
-              mmes:Parameter.find_by_id(1).mes,
-              empresa:Parameter.find_by_id(1).empresa).sum(:monto)
-
-              
-        li  strong { "SUBTOTAL :"+ '%.2f' %(suss)} 
-        li  strong { "IGV :"+ '%.2f' %(suss*0.18)} 
-        li  strong { "TOTAL :"+ '%.2f' %(smont)} 
-
-        li   link_to "Registros Excel",reports_vhoja1_path(format:  "xlsx", :param1=> 1)
-        li
-      ##  li   link_to "actualiza nuevo",reports_vhoja1_path(format:  "xlsx", :param1=> 4)
-        ##  li
-      ##    li   link_to "genera comprobante",reports_vhoja1_path(format:  "xlsx", :param1=> 5)
-        
-       end# de sider
 
      
 
