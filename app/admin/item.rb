@@ -229,7 +229,7 @@ show :title => ' Comprobante'  do
               div do
                 item.images.each do |img|
                   div do
-                    image_tag url_for(img), size: "200x200"
+                    
                     link_to img.filename, rails_blob_path(img, disposition: 'attachment')
                    
                   end
