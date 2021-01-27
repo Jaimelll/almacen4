@@ -225,17 +225,6 @@ show :title => ' Comprobante'  do
    ##          end
    ##         end
 
-            row "Imagenes" do |item|
-              div do
-                item.images.each do |img|
-                  div do
-                    image_tag url_for(img), size: "200x200"
-                    link_to img.filename, rails_blob_path(img, disposition: 'attachment')
-                   
-                  end
-                end
-              end
-            end
         
           end
           panel "Tabla de Detalles" do
