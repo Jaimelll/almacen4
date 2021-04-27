@@ -13,7 +13,26 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
+#################### pegado
 
+
+
+config.action_mailer.delivery_method = :sendgrid_actionmailer
+
+config.action_mailer.perform_deliveries = true
+config.action_mailer.raise_delivery_errors = true
+config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
+config.action_mailer.sendgrid_actionmailer_settings = {
+api_key: ENV['SENDGRID_API_KEY'],
+raise_delivery_errors: true
+}
+
+
+
+
+
+###################
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
   if Rails.root.join('tmp', 'caching-dev.txt').exist?
@@ -31,8 +50,8 @@ Rails.application.configure do
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  #config.active_storage.service = :local
-  config.active_storage.service = :cloudinary
+  #config.active_storage.service = :local  se prueba con :cloudinary
+  config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

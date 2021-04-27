@@ -1,7 +1,21 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  # Prepare the ingress controller used to receive mail
+   config.action_mailbox.ingress = :sendgrid
+
   # Settings specified here will take precedence over those in config/application.rb.
+
+   ################  pegado
+   
+   end
+  config.action_mailer.delivery_method = :sendgrid_actionmailer
+  config.action_mailer.sendgrid_actionmailer_settings = {
+   api_key: ENV['SENDGRID_API_KEY'],
+   raise_delivery_errors: true
+  }
+
+   ################
 
   # Code is not reloaded between requests.
   config.cache_classes = true
