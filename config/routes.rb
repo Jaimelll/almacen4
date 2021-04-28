@@ -15,5 +15,6 @@ match 'variables/form', via: [:get]
 match 'variables/form2', via: [:get]
 match 'variables/comment', via: [:get]
 match 'reports/vhoja1', via: [:get]
+match 'reports/vhoja2', via: [:get]
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

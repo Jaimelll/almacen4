@@ -1,0 +1,150 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+
+titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                 alignment: { horizontal: :center,vertical: :center, wrap_text: :true },
+                                b: true, sz: 8, bg_color: "C1C1C1")
+
+solestitu = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center, wrap_text: :true},num_fmt: 4,
+                                b: true,sz: 8, bg_color: "C1C1C1")
+
+soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 4, sz: 8)
+
+soles1 = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 4,
+                           sz: 8,    bg_color: "C1C1C1")
+
+soles2 = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 4,
+                           sz: 8,      bg_color: "ffff99")                           
+
+soles3 = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 4,
+                           sz: 8,     bg_color: "4dff4d")
+
+soles4 = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 4,
+                           sz: 8,     bg_color: "ff3333")
+
+
+fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                        alignment: { horizontal: :center,vertical: :center}, sz: 8)
+fechad = style.add_style(format_code: "dd/mm/yy", border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :center,vertical: :center }, sz: 8)                        
+
+fecham = style.add_style(format_code: "mmmm", border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :center,vertical: :center }, sz: 8)     
+
+
+centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center,vertical: :center }, sz: 8)
+
+centra1 = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center,vertical: :center }, sz: 8,
+                                bg_color: "C1C1C1")
+
+centra2 = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center,vertical: :center }, sz: 8,
+                                 bg_color: "ffff99")
+centra3 = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center,vertical: :center }, sz: 8,
+                                 bg_color: "4dff4d")
+   # 4dff4d verde  3
+   # C1C1C1 plomo 1
+   # ffff99 amarillo 2
+   # ff3333 rojo  4
+   
+
+centra4 = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center,vertical: :center }, sz: 8,
+                                bg_color: "ff3333")         
+
+
+
+izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :left ,vertical: :center, wrap_text: :true}, sz: 8)
+
+
+
+desc = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                              alignment: { horizontal: :left ,vertical: :center, wrap_text: :true}, sz: 8)
+
+desc2 = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                              alignment: { horizontal: :left ,vertical: :center, wrap_text: :true},
+                              sz: 8, bg_color: "ffff99")
+desc3 = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                              alignment: { horizontal: :left ,vertical: :center, wrap_text: :true},
+                              sz: 8,  bg_color: "4dff4d")
+desc4 = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                              alignment: { horizontal: :left ,vertical: :center, wrap_text: :true},
+                              sz: 8,  bg_color: "ff3333")                                                            
+
+
+ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
+                            alignment: { horizontal: :center,vertical: :center }, sz: 8)
+
+
+normal = style.add_style( alignment: { horizontal: :center,vertical: :center }, sz: 8)
+
+blue_cell =  style.add_style  :bg_color => "ffff66", :color => "FF", alignment: { horizontal: :center,vertical: :center, sz: 8 }
+
+def merge_last_row(sheet,options ={})
+  last_row = sheet.rows.last.row_index + 1
+  first_col,last_col = options[:columns]
+  if first_col && last_col
+    sheet.merge_cells "#{first_col}#{last_row}:#{last_col}#{last_row}"
+  else
+    sheet.merge_cells sheet.rows.last
+  end
+  sheet.rows.last.style = style if options[:style]
+end
+
+
+############################
+
+
+wb.add_worksheet(name: "Tickets") do |sheet|
+
+
+
+     
+    sheet.add_row ["sit",nil,
+    nil,nil,nil,nil,nil,nil,nil], 
+      style: [titu,titu,titu,titu,titu,titu,titu,titu,titu], height: 40
+    merge_last_row sheet, columns:["A","I"]
+
+  sheet.add_row ["Id", "User", "Title", "Body"],
+        style: [titu, titu, titu, titu], height: 40
+        sheet.column_widths 10,10,10,20,40
+
+    
+     
+       Ticket.order(:id).each do |vticket|
+
+
+          sheet.add_row [vticket.id,
+            vticket.user_id,
+            vticket.title,
+            vticket.body],
+           
+            style: [izq, centra, centra, centra], height: 25
+
+    
+        end # do ticket
+
+
+          
+      end # do sheet         
+
+
+     end # do style
+      
+
+
+
+
+
+

@@ -15,7 +15,7 @@ Rails.application.configure do
   config.consider_all_requests_local = true
 #################### pegado
 
-
+#config.hosts << "d111339f5e14.ngrok.io"
 
 config.action_mailer.delivery_method = :sendgrid_actionmailer
 
@@ -54,7 +54,7 @@ raise_delivery_errors: true
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 
