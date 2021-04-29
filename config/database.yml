@@ -13,4 +13,4 @@ test:
 
 production:
      <<: *development
-     database: almacend2
+     database: almacenp2
