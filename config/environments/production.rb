@@ -3,7 +3,7 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Prepare the ingress controller used to receive mail
 
-  #config.hosts << "d111339f5e14.ngrok.io"
+ # config.hosts << "00250d1484c3.ngrok.io"
    config.action_mailbox.ingress = :sendgrid
 
   # Settings specified here will take precedence over those in config/application.rb.
@@ -55,7 +55,7 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   
-  config.active_storage.service = :cloudinary
+  config.active_storage.service = :local
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://example.com/cable'
