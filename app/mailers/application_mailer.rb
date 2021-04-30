@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'info@jcontador.tk'
+  default from: 'jaduran0102@gmail.com'
   layout 'mailer'
 end

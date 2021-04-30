@@ -3,15 +3,15 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Prepare the ingress controller used to receive mail
 
-  # config.hosts << "00250d1484c3.ngrok.io"
+   config.hosts << "6bdf86dcbecb.ngrok.io"
    config.action_mailbox.ingress = :sendgrid
 
   # Settings specified here will take precedence over those in config/application.rb.
 
    ################  pegado
    ##### para ver logs
-  # Rails.logger = Logger.new(STDOUT)
-  # config.logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
+   Rails.logger = Logger.new(STDOUT)
+   config.logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
 
 
    ##### configuracion de sendgrid

@@ -15,7 +15,7 @@ Rails.application.configure do
   config.consider_all_requests_local = true
 #################### pegado
 
-#config.hosts << "d111339f5e14.ngrok.io"
+config.hosts << "6bdf86dcbecb.ngrok.io"
 
 config.action_mailer.delivery_method = :sendgrid_actionmailer
 

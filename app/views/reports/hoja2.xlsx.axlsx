@@ -116,8 +116,8 @@ wb.add_worksheet(name: "Tickets") do |sheet|
       style: [titu,titu,titu,titu,titu,titu,titu,titu,titu], height: 40
     merge_last_row sheet, columns:["A","I"]
 
-  sheet.add_row ["Id", "User", "Title", "Body"],
-        style: [titu, titu, titu, titu], height: 40
+  sheet.add_row ["Id", "User", "Title", "Body", "Obs"],
+        style: [titu, titu, titu, titu, titu], height: 40
         sheet.column_widths 10,10,10,20,40
 
     
@@ -128,9 +128,10 @@ wb.add_worksheet(name: "Tickets") do |sheet|
           sheet.add_row [vticket.id,
             vticket.user_id,
             vticket.title,
-            vticket.body],
+            vticket.body,
+            @vopc],
            
-            style: [izq, centra, centra, centra], height: 25
+            style: [izq, centra, centra, centra, centra], height: 25
 
     
         end # do ticket
