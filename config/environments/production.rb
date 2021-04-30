@@ -3,7 +3,7 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Prepare the ingress controller used to receive mail
 
-  #config.hosts << "00250d1484c3.ngrok.io"
+  # config.hosts << "00250d1484c3.ngrok.io"
    config.action_mailbox.ingress = :sendgrid
 
   # Settings specified here will take precedence over those in config/application.rb.
