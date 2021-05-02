@@ -5,8 +5,18 @@
   </head>
   <body>
     <h1>Bienvenido al buzon, <%= @user.email %></h1>
+    <h1>asunto: <%= @mmail.subject %></h1>
     <p>
-     Haz pedido un reporte
+    
+     <% case @report %>
+       <% when 1 %>
+        Haz pedido el reporte de Empresas
+       <% when 2 %>
+        Haz pedido el reporte de Tickets
+       <% else %>
+        No hay reporte para este pedido
+
+     <%end%>
       
     </p>
     

@@ -3,8 +3,9 @@ class AnswerMailer < ApplicationMailer
 
         @user=user
         @mmail=mmail
+        @report=report
 
-        case report   
+        case @report   
           when 1
             xlsx = render_to_string(layout: false,template: "reports/hoja1",
             locals: {:@vopc=> 2})  
