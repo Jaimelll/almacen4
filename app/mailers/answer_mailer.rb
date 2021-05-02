@@ -9,12 +9,12 @@ class AnswerMailer < ApplicationMailer
             xlsx = render_to_string(layout: false,template: "reports/hoja1",
             locals: {:@vopc=> 2})  
             attachment = Base64.encode64(xlsx)
-            attachments["Tickets.xlsx"] = {mime_type: Mime[:xlsx], content: attachment, encoding: 'base64'}
+            attachments["Empresas.xlsx"] = {mime_type: Mime[:xlsx], content: attachment, encoding: 'base64'}
           when 2
             xlsx = render_to_string(layout: false,template: "reports/hoja2",
             locals: {:@vopc=> 2})  
             attachment = Base64.encode64(xlsx)
-            attachments["Empresas.xlsx"] = {mime_type: Mime[:xlsx], content: attachment, encoding: 'base64'}
+            attachments["Tickets.xlsx"] = {mime_type: Mime[:xlsx], content: attachment, encoding: 'base64'}
      
           end
 
