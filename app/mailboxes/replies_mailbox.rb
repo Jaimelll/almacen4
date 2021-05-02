@@ -12,9 +12,19 @@ class RepliesMailbox < ApplicationMailbox
     else
       Ticket.create(user: user, title: mail.subject, body: mail.decoded)
     end
-    AnswerMailer.notify(user,mail).deliver
+    AnswerMailer.notify(user,mail,report).deliver
    
-  #  AnswerMailer.notify(user).deliver
+  
+  end
+
+  def report    
+    repo=0
+    case mail.subject.downcase[0,5]
+      when "empre"
+        repo=1
+      when "ticke"  
+        repo=2
+    end
   end
 
   def user
