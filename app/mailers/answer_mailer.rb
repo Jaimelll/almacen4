@@ -16,7 +16,8 @@ class AnswerMailer < ApplicationMailer
             locals: {:@vopc=> 2})  
             attachment = Base64.encode64(xlsx)
             attachments["Tickets.xlsx"] = {mime_type: Mime[:xlsx], content: attachment, encoding: 'base64'}
-     
+          else
+            @report=0
           end
 
         mail(to: @user.email,
