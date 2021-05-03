@@ -12,10 +12,24 @@ class RepliesMailbox < ApplicationMailbox
     else
       Ticket.create(user: user, title: mail.subject, body: mail.decoded)
     end
-    AnswerMailer.notify(user,mail,report).deliver
+    AnswerMailer.notify(user,mail,catego).deliver
    
   
   end
+
+  def catego   
+    cate=0
+    case user.categoria
+       when 1
+         cate=report if [0, 1, 2].include? report
+       when 2
+         cate=report if [0, 1].include? report
+     end
+  
+  end
+
+
+
 
   def report    
     repo=0
