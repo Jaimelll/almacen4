@@ -14,15 +14,13 @@ class ReportsController < ApplicationController
 
       def vhoja2
           @vopc=params[:@param1]
-          @items = Item.where(origen:Parameter.find_by_id(1).origen,mmes:Parameter.find_by_id(1).mes,empresa:Parameter.find_by_id(1).empresa).order('pfecha ASC','serie','nfactu')
-          @regis = Item.where(origen:Parameter.find_by_id(1).origen,mmes:Parameter.find_by_id(1).mes,empresa:Parameter.find_by_id(1).empresa).count('Id')
-          @acum = Item.where(origen:Parameter.find_by_id(1).origen,mmes:Parameter.find_by_id(1).mes,empresa:Parameter.find_by_id(1).empresa).sum('subtotal')
-       
+          @items = Item.where(mmes:Parameter.find_by_id(1).mes,empresa:Parameter.find_by_id(1).empresa).order('sele')
+        
           
           respond_to do |format|
             format.html
         
-            format.xlsx{render template: 'reports/hoja2.xlsx.axlsx', xlsx:'tickets'}
+            format.xlsx{render template: 'reports/hoja2.xlsx.axlsx', xlsx:'items'}
           end
         end
        

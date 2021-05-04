@@ -20,7 +20,7 @@ br
 strong { "Periodo:"+Parameter.find_by_id(1).mes.strftime("%b/%Y")}
 br
 br
-     strong { link_to "compras",reports_vhoja2_path(format:  "xlsx", :@param1=> 2)}
+     strong { link_to "excel",reports_vhoja2_path(format:  "xlsx", :@param1=> 2)}
 br
 
 case Parameter.find_by_id(1).origen

@@ -102,7 +102,7 @@ def merge_last_row(sheet,options ={})
   sheet.rows.last.style = style if options[:style]
 end
 
-
+ produ = ProductsController.new 
 ############################
 
 case @vopc.to_i
@@ -141,81 +141,82 @@ wb.add_worksheet(name: "Tickets1") do |sheet|
       end # do sheet  
 
 when 2
+
  vruc=Formula.where(product_id:10,orden:Parameter.find_by_id(1).empresa).
        select('indicacion').map {|e| e.attributes.values}.uniq.flatten.compact
+
+   #####origen    
+    [1,2].each do |vorigen| 
+
+
+    if vorigen==1 then   
+      vproduct=17
+      vntitu='compra'
+      nombre="compras"
+   
+    else
+      vproduct=18
+      vntitu='venta'
+      nombre="ventas"
+
+    end  
     
- nombre=vruc[0]+ Parameter.find_by_id(1).mes.strftime("%Y") +
-          Parameter.find_by_id(1).mes.strftime("%m")+"00080100001111"
+ 
 
 wb.add_worksheet(name: nombre) do |sheet|
 
-           if Parameter.find_by_id(1).origen==1 
+          
               columna=[]
               titulo=[]
-             Formula.where(product_id:17).order('orden').each do |colu| 
+             Formula.where(product_id:vproduct).order('orden').each do |colu| 
 
-                columna.push("compra"+colu.orden.to_s)  
+                columna.push(vntitu+colu.orden.to_s)  
                  
            
              end
-           
-            else
-              columna=[]
-             Formula.where(product_id:18).order('orden').each do |colu| 
-
-                  columna.push("venta"+colu.orden.to_s)   
-           
-             end
-           
           
-
-
-
-            end  # if
+ 
        
   
 
-  sheet.add_row columna,
-        style: titulo, height: 40
-        sheet.column_widths 10,10,10,10,10
+       sheet.add_row columna, height: 40
+       
+        
 
 
 
 
-     produ = ProductsController.new 
+    
      
-          @items.each do |item| 
+          @items.where(origen:vorigen).each do |item| 
+
+
+  
             
             vvalor=[]
-           if Parameter.find_by_id(1).origen==1 
+          
               
-             Formula.where(product_id:17).order('orden').each do |colu| 
+             Formula.where(product_id:vproduct).order('orden').each do |colu| 
 
                 vlinea=produ.funcx(item.id,colu.cantidad)       
                 vvalor.push(vlinea.chop!)
              end
                 sheet.add_row vvalor
-            else
-              
-             Formula.where(product_id:18).order('orden').each do |colu| 
-
-                vlinea=produ.funcx(item.id,colu.cantidad)      
-                vvalor.push(vlinea.chop!)
-             end
-               sheet.add_row vvalor
+            
+            
 
 
-
-            end  # if
+           
              
        
            end # do item
 
-
+      end # vorigen
           
       end # do sheet         
 
       end # case
+
      end # do style
       
 
