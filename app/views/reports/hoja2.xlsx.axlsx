@@ -105,20 +105,21 @@ end
 
 ############################
 
-
-wb.add_worksheet(name: "Tickets") do |sheet|
+case @vopc.to_i
+when 1
+wb.add_worksheet(name: "Tickets1") do |sheet|
 
 
 
      
     sheet.add_row ["sit",nil,
-    nil,nil,nil,nil,nil,nil,nil], 
-      style: [titu,titu,titu,titu,titu,titu,titu,titu,titu], height: 40
-    merge_last_row sheet, columns:["A","I"]
+    nil,nil], 
+      style: [titu,titu,titu,titu], height: 40
+    merge_last_row sheet, columns:["A","D"]
 
-  sheet.add_row ["Id", "User", "Title", "Body", "Obs"],
-        style: [titu, titu, titu, titu, titu], height: 40
-        sheet.column_widths 10,10,10,20,40
+  sheet.add_row ["Id", "User", "Title", "Body"],
+        style: [titu, titu, titu, titu], height: 40
+        sheet.column_widths 10,10,10,20
 
     
      
@@ -128,19 +129,93 @@ wb.add_worksheet(name: "Tickets") do |sheet|
           sheet.add_row [vticket.id,
             vticket.user_id,
             vticket.title,
-            vticket.body,
-            @vopc],
+            vticket.body],
            
-            style: [izq, centra, centra, centra, centra], height: 25
+            style: [izq, centra, centra, centra], height: 25
 
     
         end # do ticket
 
 
           
+      end # do sheet  
+
+when 2
+ vruc=Formula.where(product_id:10,orden:Parameter.find_by_id(1).empresa).
+       select('indicacion').map {|e| e.attributes.values}.uniq.flatten.compact
+    
+ nombre=vruc[0]+ Parameter.find_by_id(1).mes.strftime("%Y") +
+          Parameter.find_by_id(1).mes.strftime("%m")+"00080100001111"
+
+wb.add_worksheet(name: nombre) do |sheet|
+
+           if Parameter.find_by_id(1).origen==1 
+              columna=[]
+              titulo=[]
+             Formula.where(product_id:17).order('orden').each do |colu| 
+
+                columna.push("compra"+colu.orden.to_s)  
+                 
+           
+             end
+           
+            else
+              columna=[]
+             Formula.where(product_id:18).order('orden').each do |colu| 
+
+                  columna.push("venta"+colu.orden.to_s)   
+           
+             end
+           
+          
+
+
+
+            end  # if
+       
+  
+
+  sheet.add_row columna,
+        style: titulo, height: 40
+        sheet.column_widths 10,10,10,10,10
+
+
+
+
+     produ = ProductsController.new 
+     
+          @items.each do |item| 
+            
+            vvalor=[]
+           if Parameter.find_by_id(1).origen==1 
+              
+             Formula.where(product_id:17).order('orden').each do |colu| 
+
+                vlinea=produ.funcx(item.id,colu.cantidad)       
+                vvalor.push(vlinea.chop!)
+             end
+                sheet.add_row vvalor
+            else
+              
+             Formula.where(product_id:18).order('orden').each do |colu| 
+
+                vlinea=produ.funcx(item.id,colu.cantidad)      
+                vvalor.push(vlinea.chop!)
+             end
+               sheet.add_row vvalor
+
+
+
+            end  # if
+             
+       
+           end # do item
+
+
+          
       end # do sheet         
 
-
+      end # case
      end # do style
       
 
