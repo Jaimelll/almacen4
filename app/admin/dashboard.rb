@@ -22,6 +22,7 @@ br
 br
      strong { link_to "excel",reports_vhoja2_path(format:  "xlsx", :@param1=> 2)}
 br
+br
 
 case Parameter.find_by_id(1).origen
   when 1

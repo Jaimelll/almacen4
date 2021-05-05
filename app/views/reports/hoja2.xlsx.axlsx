@@ -142,8 +142,42 @@ wb.add_worksheet(name: "Tickets1") do |sheet|
 
 when 2
 
+ 
  vruc=Formula.where(product_id:10,orden:Parameter.find_by_id(1).empresa).
        select('indicacion').map {|e| e.attributes.values}.uniq.flatten.compact
+    
+
+wb.add_worksheet(name: "empresa") do |sheet|
+
+ sheet.add_row ["EMPRESA :", Formula.where(product_id:10,orden:Parameter.find_by_id(1).empresa).
+                select('descripcion as dd').first.dd],           
+            style: [centra, centra], height: 25
+
+ sheet.add_row ["RUC :", Formula.where(product_id:10,orden:Parameter.find_by_id(1).empresa).
+                select('indicacion as dd').first.dd],           
+            style: [centra, centra], height: 25
+
+ sheet.add_row ["PERIODO :", Parameter.find_by_id(1).mes],  
+            style: [centra, fechad], height: 25
+
+ sheet.add_row ["COMPRAS :", "LE" +vruc[0]+ Parameter.find_by_id(1).mes.strftime("%Y") +
+          Parameter.find_by_id(1).mes.strftime("%m")+"00080100001111"],  
+            style: [centra, centra], height: 25
+
+ sheet.add_row ["VENTAS :", "LE" +vruc[0]+ Parameter.find_by_id(1).mes.strftime("%Y") +
+           Parameter.find_by_id(1).mes.strftime("%m")+"00140100001111"],  
+            style: [centra, centra], height: 25
+
+
+
+sheet.column_widths 15,30
+end # do sheet 
+
+
+
+
+
+
 
    #####origen    
     [1,2].each do |vorigen| 
