@@ -36,7 +36,7 @@ class RepliesMailbox < ApplicationMailbox
     case mail.subject.downcase[0,5]
       when "empre"
         repo=1
-      when "ticke"  
+      when "sunat"  
         repo=2
     end
   end

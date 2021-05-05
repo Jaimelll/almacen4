@@ -221,8 +221,8 @@ wb.add_worksheet(name: nombre) do |sheet|
 
 
     
-     
-          @items.where(origen:vorigen).each do |item| 
+         if @items.where(origen:vorigen).count>0 then
+           @items.where(origen:vorigen).each do |item| 
 
 
   
@@ -244,10 +244,14 @@ wb.add_worksheet(name: nombre) do |sheet|
              
        
            end # do item
+      
+          end  # item mayor qye 0
+
+        end # do sheet 
 
       end # vorigen
           
-      end # do sheet         
+             
 
       end # case
 

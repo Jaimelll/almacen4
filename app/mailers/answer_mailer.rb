@@ -12,10 +12,11 @@ class AnswerMailer < ApplicationMailer
             attachment = Base64.encode64(xlsx)
             attachments["Empresas.xlsx"] = {mime_type: Mime[:xlsx], content: attachment, encoding: 'base64'}
           when 2
+            items = Item.where(mmes:Parameter.find_by_id(1).mes,empresa:Parameter.find_by_id(1).empresa).order('sele')
             xlsx = render_to_string(layout: false,template: "reports/hoja2",
-            locals: {:@vopc=> 2})  
+            locals: {:@vopc=> 2, :@items=> items})  
             attachment = Base64.encode64(xlsx)
-            attachments["Tickets.xlsx"] = {mime_type: Mime[:xlsx], content: attachment, encoding: 'base64'}
+            attachments["Sunat.xlsx"] = {mime_type: Mime[:xlsx], content: attachment, encoding: 'base64'}
           else
             @report=0
           end
