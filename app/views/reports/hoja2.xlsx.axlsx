@@ -205,7 +205,7 @@ wb.add_worksheet(name: nombre) do |sheet|
              Formula.where(product_id:vproduct).order('orden').each do |colu| 
 
                 columna.push(vntitu+colu.orden.to_s)  
-                 
+                 titulo=titulo+[titu]
            
              end
           
@@ -213,7 +213,7 @@ wb.add_worksheet(name: nombre) do |sheet|
        
   
 
-       sheet.add_row columna, height: 40
+       sheet.add_row columna, style: titulo, height: 40
        
         
 
@@ -228,14 +228,15 @@ wb.add_worksheet(name: nombre) do |sheet|
   
             
             vvalor=[]
-          
+            vestilo=[]
               
              Formula.where(product_id:vproduct).order('orden').each do |colu| 
 
                 vlinea=produ.funcx(item.id,colu.cantidad)       
                 vvalor.push(vlinea.chop!)
+                vestilo=vestilo+[izq]
              end
-                sheet.add_row vvalor
+                sheet.add_row vvalor, style: vestilo, height: 25
             
             
 
