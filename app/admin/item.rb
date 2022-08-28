@@ -68,7 +68,7 @@ filter :nfactu, label:'Factura'
 
 
   
-index :title => "Comprobante" do
+index :title => "Movimiento" do
   compro.nuevos
 
   column("Codigo", :sortable => :sele) {|selen|  selen.sele }
@@ -82,16 +82,9 @@ index :title => "Comprobante" do
   column("Centro", :client_id) do |item|
    item.client.ruc+"-"+item.client.razon.capitalize if item.client
   end
-  column("ruc")
-  column("razon")
-  column("razon2")
-  column("monto")
-  column("subtotal") do |item|
-    div :class => 'sub' do
-      '%.2f' %(item.subtotal) if item.subtotal
-        end
 
-  end
+
+  
     column("tc")
     column("isc")
     column("bolsas")
@@ -176,7 +169,7 @@ form :title => 'Edicion Comprobante'  do |f|
   end
 
 
-show :title => ' Comprobante'  do
+show :title => ' Movimiento'  do
            
   #         if Item.find_by_id(params[:id]).ruc then
    #         compro.jalar( Item.find_by_id(params[:id]).ruc,params[:id])
@@ -202,23 +195,8 @@ show :title => ' Comprobante'  do
             row :Centro do |item|
               item.client.razon.capitalize if item.client
             end
-            row :ruc
-            row :razon
-            row :razon2
-            row :subtotal 
-            row :monto
-           
-            row :moneda do |item|
-              Formula.where(product_id:8,orden:item.moneda).
-                   select('descripcion as dd').first.dd
-             end
-            row :tc
-            row :serie2
-            row :ndocu2
-            row :isc
-            row :bolsas
-            row :oconceptos
-  ##          row "Imagen" do  |item| 
+        
+      
   ##           unless item.image.blank?
   ##            link_to item.image.filename, rails_blob_path(item.image, disposition: 'attachment')
              
