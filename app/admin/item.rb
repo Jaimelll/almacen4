@@ -30,6 +30,9 @@ action_item :only=> :index do
   link_to   'Compra', compra_admin_parameter_path(1, :@num), method: :put
 end
 
+action_item :only=> :index do
+  link_to   'Regenerar movimiento', regenerar_admin_parameter_path(1, :@num), method: :put
+end
 
 
 #### necesario para borrar hijos con el padre agregar _atributes
@@ -235,7 +238,17 @@ show :title => ' Movimiento'  do
       end
 
 
-     
+      sidebar  " DATOS " do
+        
+        strong { Formula.where(product_id:10).where(orden:Parameter.find_by_id(1).empresa).
+          select('descripcion as dd').first.dd.capitalize}
+        br
+        strong { Parameter.find_by_id(1).mes}
+        br
+        strong { Formula.where(product_id:11).where(orden:Parameter.find_by_id(1).origen).
+          select('descripcion as dd').first.dd.capitalize}
+
+      end   
 
 
 

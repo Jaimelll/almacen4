@@ -31,6 +31,16 @@ ActiveAdmin.register Parameter do
       
     end
 
+
+    member_action :regenerar, method: :put do
+
+      dar = ParametersController.new   
+      dar.regenera
+      redirect_to admin_items_path  
+      
+    end
+
+
   #   member_action :darcodini, method: :put do
   #     redirect_to admin_parameters_path
   #   end

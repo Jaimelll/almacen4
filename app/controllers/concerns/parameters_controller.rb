@@ -41,6 +41,18 @@ class ParametersController < ApplicationController
       return vnomb
     end
 
+     def regenera   
+
+        vite2=Item.where(empresa:Parameter.find_by_id(1).empresa,
+               mmes:Parameter.find_by_id(1).mes)
+        vite3=vite2.select('id').map {|e| e.attributes.values}.uniq.flatten.compact  
+        vdeta=Detail.where(item_id:vite3)
+        vdeta.delete_all
+        vite2.delete_all
+
+
+      end
+
 
 
 
