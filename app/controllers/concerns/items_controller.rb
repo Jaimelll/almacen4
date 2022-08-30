@@ -104,12 +104,15 @@ class ItemsController < ApplicationController
     
     
 
-     Item.where(nuevo:1).update_all( origen:Parameter.find_by_id(1).origen, 
-                                     mmes:Parameter.find_by_id(1).mes,
-                                     empresa:Parameter.find_by_id(1).empresa)
-
+    
+ cont=0
     
   Item.where(nuevo:1).where('monto IS NOT NULL').each do |ittem| 
+  if cont==0 
+  Parameter.where(id:1).update_all(origen:1,empresa:ittem.empresa,mes:ittem.mmes)
+  cont=1
+  end  
+
     vsub=0
     votro=0
     if ittem.isc 
@@ -139,11 +142,43 @@ class ItemsController < ApplicationController
      
      compro.jalar( ittem.ruc,ittem.id)
      
-    end                        
-  
+    end 
 
 
+    vite1=Item.where(empresa:Parameter.find_by_id(1).empresa).
+                  where( "mmes<?",Parameter.find_by_id(1).mes)
+
+    vite2=Item.where(empresa:Parameter.find_by_id(1).empresa,
+                  mmes:Parameter.find_by_id(1).mes)
+
+    [1,2].each do |vorigen| 
+
+    
+       vsel=1
+       if vite1.where(origen:vorigen).count>0 then
+           vsel= vite1.where(origen:vorigen).maximum(:sele)+1 
+       end
+          
+       
+
+       vite=vite2.where(origen:vorigen).order('pfecha ASC','serie','nfactu')
+                   
+           
+      
+            if vite.count>0 then    
+                 vite.each do |item|
+                   Item.where(id:item.id).update_all(sele:vsel)
+                   vsel=vsel+1
+                 end      
+            end
+
+ 
+
+     end
   end
+
+
+
 
 
 
